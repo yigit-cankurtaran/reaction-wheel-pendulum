@@ -1,0 +1,54 @@
+<mujoco model="reaction wheel pendulum">
+  <compiler angle="radian" inertiafromgeom="true"/>
+  <option timestep="0.004" integrator="RK4" gravity="0 0 -9.81"/>
+
+  <default>
+    <joint damping="0.02" armature="0.002"/>
+    <geom friction="0.8 0.1 0.1" contype="0" conaffinity="0"/>
+  </default>
+
+  <visual>
+    <headlight diffuse="0.7 0.7 0.7" ambient="0.3 0.3 0.3"/>
+    <global azimuth="135" elevation="-15"/>
+  </visual>
+
+  <asset>
+    <texture name="sky" type="skybox" builtin="gradient"
+             rgb1="0.08 0.11 0.16" rgb2="0.25 0.31 0.40" width="512" height="3072"/>
+    <material name="arm" rgba="0.18 0.55 0.85 1"/>
+    <material name="wheel" rgba="0.95 0.45 0.12 1"/>
+    <material name="hub" rgba="0.16 0.18 0.22 1"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0 -3 4" dir="0 1 -1"/>
+    <geom name="ground" type="plane" pos="0 0 -1.15" size="3 3 0.1"
+          contype="1" conaffinity="1" rgba="0.12 0.14 0.18 1"/>
+    <geom name="pivot" type="cylinder" pos="0 0 0" quat="0.7071 0.7071 0 0"
+          size="0.10 0.28" material="hub"/>
+
+    <body name="pendulum" pos="0 0 0">
+      <joint name="body_hinge" type="hinge" axis="0 1 0" limited="false"/>
+      <geom name="arm_geom" type="capsule" fromto="0 0 -0.08 0 0 -0.82"
+            size="0.055" density="90" material="arm"/>
+      <geom name="counterweight" type="sphere" pos="0 0 -0.84" size="0.10"
+            density="220" material="hub"/>
+
+      <body name="wheel" pos="0 0 -0.70">
+        <joint name="wheel_hinge" type="hinge" axis="0 1 0" limited="false"
+               damping="0.02" armature="0.001"/>
+        <geom name="wheel_geom" type="cylinder" quat="0.7071 0.7071 0 0"
+              size="0.24 0.045" density="180" material="wheel"/>
+        <geom name="wheel_hub" type="cylinder" quat="0.7071 0.7071 0 0"
+              size="0.065 0.065" density="900" material="hub"/>
+        <site name="wheel_mark" type="box" pos="0 0.052 0.14" size="0.025 0.012 0.09"
+              rgba="1 0.9 0.25 1"/>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <motor name="wheel_motor" joint="wheel_hinge" gear="1" ctrllimited="true"
+           ctrlrange="-3.0 3.0"/>
+  </actuator>
+</mujoco>

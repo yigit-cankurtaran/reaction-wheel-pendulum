@@ -1,0 +1,32 @@
+[project]
+name = "reaction-wheel-rl"
+version = "0.1.0"
+description = "Recover and balance a reaction-wheel pendulum with MuJoCo and reinforcement learning"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "gymnasium>=1.1,<2",
+    "imageio>=2.37,<3",
+    "matplotlib>=3.10,<4",
+    "mujoco>=3.3,<4",
+    "numpy>=2.0,<3",
+    "pillow>=11,<13",
+    "stable-baselines3>=2.6,<3",
+    "torch>=2.6,<3",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.3,<10", "ruff>=0.11,<1"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/reaction_wheel_rl"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
