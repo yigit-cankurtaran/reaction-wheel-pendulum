@@ -45,6 +45,16 @@ The evaluator reports average return and the percentage of time the body is with
 UV_CACHE_DIR=.uv-cache uv run pytest
 ```
 
+To watch a trained policy in a MuJoCo window, continuously across episodes, run:
+
+```bash
+UV_CACHE_DIR=.uv-cache uv run python -m reaction_wheel_rl.watch \
+  --model artifacts/best_model.zip
+```
+
+It runs at real time by default. Close the window or press `Ctrl-C` to stop; pass
+`--speed 2` for double-speed playback.
+
 ## Ideas to extend it
 
 - Randomize mass, friction, motor strength, and sensor noise for sim-to-real work.

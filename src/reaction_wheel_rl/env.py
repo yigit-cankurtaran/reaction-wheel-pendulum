@@ -52,6 +52,11 @@ class ReactionWheelPendulumEnv(gym.Env[np.ndarray, np.ndarray]):
     def dt(self) -> float:
         return float(self.model.opt.timestep * self.frame_skip)
 
+    @property
+    def viewer_is_running(self) -> bool:
+        """Whether the human viewer remains open, when one has been launched."""
+        return self._viewer is None or self._viewer.is_running()
+
     def _get_obs(self) -> np.ndarray:
         theta = float(self.data.qpos[0])
         obs = np.array(
