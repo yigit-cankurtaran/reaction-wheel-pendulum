@@ -55,6 +55,27 @@ UV_CACHE_DIR=.uv-cache uv run python -m reaction_wheel_rl.watch \
 It runs at real time by default. Close the window or press `Ctrl-C` to stop; pass
 `--speed 2` for double-speed playback.
 
+## Watch the environment
+
+[![Reaction-wheel pendulum rollout](media/thumbnail.png)](https://youtu.be/C1NiGdZV8Ak)
+
+Click the image to watch the env work. The video is also available at
+https://youtu.be/C1NiGdZV8Ak.
+
+The clip shows three deterministic evaluation rollouts from the saved policy. To
+record them again and create a YouTube-ready MP4 and thumbnail:
+
+```bash
+mkdir -p media
+UV_CACHE_DIR=.uv-cache uv run python -m reaction_wheel_rl.evaluate \
+  --model artifacts/best_model.zip --episodes 3 --gif artifacts/rollout.gif
+ffmpeg -y -i artifacts/rollout.gif \
+  -vf "setpts=PTS/5,fps=30,scale=960:-2:flags=lanczos" -c:v libx264 -preset slow \
+  -crf 23 -pix_fmt yuv420p -movflags +faststart media/rollout.mp4
+ffmpeg -y -ss 00:00:02 -i media/rollout.mp4 -frames:v 1 \
+  -q:v 2 media/thumbnail.png
+```
+
 ## Ideas to extend it
 
 - Randomize mass, friction, motor strength, and sensor noise for sim-to-real work.

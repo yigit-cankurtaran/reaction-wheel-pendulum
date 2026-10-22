@@ -35,7 +35,7 @@ def main() -> None:
         total_reward = 0.0
         balanced_steps = 0
         steps = 0
-        if args.gif and episode == 0:
+        if args.gif:
             frames.append(env.render())
         while not done:
             action, _ = model.predict(obs, deterministic=True)
@@ -44,7 +44,7 @@ def main() -> None:
             total_reward += reward
             balanced_steps += int(info["is_balanced"])
             steps += 1
-            if args.gif and episode == 0:
+            if args.gif:
                 frames.append(env.render())
         returns.append(total_reward)
         balanced_fractions.append(balanced_steps / steps)
